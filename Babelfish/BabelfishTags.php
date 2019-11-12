@@ -48,7 +48,7 @@ class BabelfishTags extends Tags
      */
     private function article()
     {
-        $user = User::find($this->context('recipe_author'));
+        $user = User::find($this->context('article_author'));
         return '<script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -95,7 +95,7 @@ class BabelfishTags extends Tags
             "name": "' . $this->context('person_name') . '",
             "url": "' . $this->context('person_url') . '",
             "image": "' . $this->context('person_photo') . '",
-            "sameAs": [\'' . \implode("','", $this->context('person_social_profiles')) . '\'],
+            "sameAs": ' . $this->context('person_social_profiles') . '",
             "jobTitle": "' . $this->context('person_job_title') . '",
             "worksFor": {
                 "@type": "Organization",
@@ -120,7 +120,7 @@ class BabelfishTags extends Tags
         "image": "' . $this->context('product_image') . '",
         "description": "' . $this->context('product_description') . '",
         "brand": "' . $this->context('product_brand') . '",
-        ' . $this->product_properties($this->context('product_properties')) . '
+        ' . $this->product_properties($this->context['product_properties']) . '
         "offers": {
             "@type": "Offer",
             "url": "' . $this->context('product_url') . '",
@@ -150,7 +150,7 @@ class BabelfishTags extends Tags
             "name": "' . $this->context('recipe_title') . '",
             "image": "' . $this->context('recipe_photo') . '",
             "description": "' . $this->context('recipe_description') . '",
-            "keywords": "' . \implode(",", $this->context('recipe_keywords')) . '",
+            "keywords": "' . $this->context('recipe_keywords') . '",
             "author": {
                 "@type": "Person",
                 "name": "' . $user->get('first_name') . ' ' . $user->get('last_name') .'"
@@ -165,10 +165,8 @@ class BabelfishTags extends Tags
                 "calories": "' . $this->context('recipe_calories') . ' cal",
                 "fatContent": "' . $this->context('recipe_fat') . ' g"
             },
-            "recipeIngredient": [
-                \'' . \implode("','", $this->context('recipe_ingredients_list')) . '\'
-            ],
-            "recipeInstructions": [{"@type": "HowToStep","text":"' . \implode("\"},{\"@type\": \"HowToStep\",\"text\":\"", $this->context('recipe_steps_list')) . '"}]
+            "recipeIngredient": ' . $this->context('recipe_ingredients_list') . ',
+            "recipeInstructions": ""
         }
         </script>';
     }
@@ -188,8 +186,8 @@ class BabelfishTags extends Tags
             "alternateName": "' . $this->context('organization_alternate_name') . '",
             "url": "' . $this->context('organization_url') . '",
             "logo": "' . $this->context('organization_logo') . '",
-            "contactPoint": ' . $this->organization_contacts($this->context('organization_contacts')) . ',
-            "sameAs": [\'' . \implode("','", $this->context('organization_social_profiles')) . '\'],
+            "contactPoint": ' . $this->organization_contacts($this->context['organization_contacts']) . ',
+            "sameAs": ' . $this->context('organization_social_profiles') . ',
         }
         </script>';
     }
@@ -257,10 +255,12 @@ class BabelfishTags extends Tags
     private function product_properties($properties)
     {
         $list = '';
-        foreach ($properties as $property) {
-            $list .= '"' . $property['property'] . '": "' . $property['value'] . '",';
+        if (isset($properties)) {
+            foreach ($properties as $property) {
+                $list .= '"' . $property['property'] . '": "' . $property['value'] . '",';
+            }
+            return $list;
         }
-        return $list;
     }
 
     /**
@@ -271,14 +271,30 @@ class BabelfishTags extends Tags
     private function organization_contacts($contacts)
     {
         $list = '';
+        if (isset($contacts)) {
+            foreach ($contacts as $contact) {
+                $list .= '{';
+                $list .= '"@type": "ContactPoint",';
+                $list .= '"telephone": "' . $contact['phone'] . '",';
+                $list .= '"contactType": "// TODO: credit card support",';
+                $list .= '"contactOption": // TODO: ["TollFree","HearingImpairedSupported"],';
+                $list .= '"availableLanguage": // TODO: ["en","es"]';
+                $list .= '},';
+            }
+            return $list;
+        }
+    }
+
+    /**
+     * Recipe instructions
+     *
+     * @return string
+     */
+    private function recipe_instructions($instruction)
+    {
+        $list = '';
         foreach ($contacts as $contact) {
-            $list .= '{';
-            $list .= '"@type": "ContactPoint",';
-            $list .= '"telephone": "' . $contact['phone'] . '",';
-            $list .= '"contactType": "// TODO: credit card support",';
-            $list .= '"contactOption": // TODO: ["TollFree","HearingImpairedSupported"],';
-            $list .= '"availableLanguage": // TODO: ["en","es"]';
-            $list .= '},';
+            // [{"@type": "HowToStep","text":"' . \implode("\"},{\"@type\": \"HowToStep\",\"text\":\"", $this->context('recipe_steps_list')) . '"}]
         }
         return $list;
     }
@@ -291,7 +307,29 @@ class BabelfishTags extends Tags
     private function context($fieldtype)
     {
         if (isset($this->context[$fieldtype])) {
-            return $this->context[$fieldtype];
+
+            // $fieldtype exists
+            $ft = $this->context[$fieldtype];
+
+            if (is_array($ft)) {
+
+                // $ft is an array
+                if (count($ft) == 1) {
+
+                    // $ft has 1
+                    return '"' . \implode("','", $ft) . '"';
+
+                } elseif (count($ft) > 1) {
+
+                    // $ft has more than 1
+                    return "['" . \implode("','", $ft) . "']";
+
+                }
+            } else {
+                // $ft is a string
+                return $ft;
+            }
+
         } else {
             return null;
         }
