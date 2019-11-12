@@ -22,6 +22,9 @@ class BabelfishTags extends Tags
             case "article":
                 return $this->article();
                 break;
+            case "organization":
+                return $this->organization();
+                break;
             case "person":
                 return $this->person();
                 break;
@@ -31,11 +34,7 @@ class BabelfishTags extends Tags
             case "recipe":
                 return $this->recipe();
                 break;
-            case "review":
-                break;
             case "service":
-                break;
-            case "software":
                 break;
         }
 
@@ -175,11 +174,32 @@ class BabelfishTags extends Tags
     }
 
     /**
+     * Organization
+     *
+     * @return string
+     */
+    private function organization()
+    {
+        return '<script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "' . $this->context('organization_type') . '",
+            "name": "' . $this->context('organization_name') . '",
+            "alternateName": "' . $this->context('organization_alternate_name') . '",
+            "url": "' . $this->context('organization_url') . '",
+            "logo": "' . $this->context('organization_logo') . '",
+            "contactPoint": ' . $this->organization_contacts($this->context('organization_contacts')) . ',
+            "sameAs": [\'' . \implode("','", $this->context('organization_social_profiles')) . '\'],
+        }
+        </script>';
+    }
+
+    /**
      * Product availability
      *
      * @return string
      */
-    public function product_availabilty($availability)
+    private function product_availabilty($availability)
     {
         switch ($availability) {
             case "in_stock":
@@ -217,7 +237,7 @@ class BabelfishTags extends Tags
      *
      * @return string
      */
-    public function product_condition($availability)
+    private function product_condition($availability)
     {
         switch ($availability) {
             case "new":
@@ -234,11 +254,31 @@ class BabelfishTags extends Tags
      *
      * @return string
      */
-    public function product_properties($properties)
+    private function product_properties($properties)
     {
         $list = '';
         foreach ($properties as $property) {
             $list .= '"' . $property['property'] . '": "' . $property['value'] . '",';
+        }
+        return $list;
+    }
+
+    /**
+     * Organization contact
+     *
+     * @return string
+     */
+    private function organization_contacts($contacts)
+    {
+        $list = '';
+        foreach ($contacts as $contact) {
+            $list .= '{';
+            $list .= '"@type": "ContactPoint",';
+            $list .= '"telephone": "' . $contact['phone'] . '",';
+            $list .= '"contactType": "// TODO: credit card support",';
+            $list .= '"contactOption": // TODO: ["TollFree","HearingImpairedSupported"],';
+            $list .= '"availableLanguage": // TODO: ["en","es"]';
+            $list .= '},';
         }
         return $list;
     }

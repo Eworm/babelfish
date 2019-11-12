@@ -15,31 +15,29 @@ class BabelfishListener extends Listener
      * @var array
      */
     public $events = [
-        \Statamic\Events\Data\FindingFieldset::class => 'addEventTab',
+        \Statamic\Events\Data\FindingFieldset::class => 'addSnippetsTab',
         'cp.add_to_head' => 'addToHead'
     ];
 
     /**
-     * Add the events tab to the chosen entry
+     * Add the rich snippets tab to the chosen entry
      *
      * @var array
      */
-    public function addEventTab(FindingFieldset $eventCollection)
+    public function addSnippetsTab(FindingFieldset $eventCollection)
     {
-        if ($eventCollection->type == 'entry') {
-            $fieldset = $eventCollection->fieldset;
-            $sections = $fieldset->sections();
-            $fields = YAML::parse(File::get($this->getDirectory().'/resources/fieldsets/content.yaml'))['fields'];
+        $fieldset = $eventCollection->fieldset;
+        $sections = $fieldset->sections();
+        $fields = YAML::parse(File::get($this->getDirectory().'/resources/fieldsets/content.yaml'))['fields'];
 
-            $sections['event'] = [
-                 'display' => 'Rich snippet',
-                 'fields' => $fields
-             ];
+        $sections['event'] = [
+             'display' => 'Rich snippet',
+             'fields' => $fields
+         ];
 
-            $contents = $fieldset->contents();
-            $contents['sections'] = $sections;
-            $fieldset->contents($contents);
-        }
+        $contents = $fieldset->contents();
+        $contents['sections'] = $sections;
+        $fieldset->contents($contents);
     }
 
     protected function getPlaceholder($key, $field, $data)

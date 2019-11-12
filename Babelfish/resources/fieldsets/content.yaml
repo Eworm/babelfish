@@ -4,6 +4,7 @@ fields:
     options:
       - choose
       - article
+      - organization
       - person
       - product
       - recipe
@@ -297,3 +298,77 @@ fields:
     type: text
     show_when:
       schema_type: service
+  organization_name:
+    type: text
+    show_when:
+      schema_type: organization
+  organization_alternate_name:
+    type: text
+    show_when:
+      schema_type: organization
+  organization_type:
+    type: select
+    options:
+      - organization
+      - airline
+      - consortium
+      - corporation
+      - educationalorganization
+      - governmentorganization
+      - librarysystem
+      - medicalorganization
+      - ngo
+      - newsmediaorganization
+      - performinggroup
+      - project
+      - sportsorganization
+      - workersunion
+      - newsmediaorganization
+    show_when:
+      schema_type: organization
+  organization_url:
+    type: text
+    mode: url
+    show_when:
+      schema_type: organization
+  organization_logo:
+    type: assets
+    container: main
+    max_files: 1
+    show_when:
+      schema_type: organization
+  organization_social_profiles:
+    type: list
+    show_when:
+      schema_type: organization
+  organization_contacts:
+    type: grid
+    fields:
+      type:
+        type: select
+        options:
+          - customer_service
+          - technical_support
+          - billing_support
+          - bill_payment
+          - sales
+          - reservations
+          - credit_card_support
+          - emergency
+          - baggage_tracking
+          - roadside_assistance
+          - package_tracking
+      phone:
+        type: text
+        mode: tel
+      areas:
+        type: list
+      languages:
+        type: list
+      extras:
+        type: checkboxes
+        options:
+          - toll_free
+          - hearing_impared_support
+    show_when:
+      schema_type: organization
