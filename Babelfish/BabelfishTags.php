@@ -276,7 +276,7 @@ class BabelfishTags extends Tags
                 $list .= '{';
                 $list .= '"@type": "ContactPoint",';
                 $list .= '"telephone": "' . $contact['phone'] . '",';
-                $list .= '"contactType": "// TODO: credit card support",';
+                $list .= '"contactType": "' . $contact['type'] . '",';
                 $list .= '"contactOption": // TODO: ["TollFree","HearingImpairedSupported"],';
                 $list .= '"availableLanguage": // TODO: ["en","es"]';
                 $list .= '},';
@@ -292,7 +292,6 @@ class BabelfishTags extends Tags
      */
     private function recipe_instructions($instructions)
     {
-        // dd($instructions);
         $list = '';
         if (isset($instructions)) {
             $list .= "[";
