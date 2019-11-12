@@ -7,30 +7,12 @@ fields:
       - person
       - product
       - recipe
-      - review
       - service
-      - software
     default: choose
   snippet:
     type: section
     hide_when:
       schema_type: choose
-  review_title:
-    disableable: false
-    type: babelfish.source
-    field:
-      type: text
-    show_when:
-      schema_type: review
-  review_author:
-    type: users
-    default: current
-    show_when:
-      schema_type: review
-  review_rating:
-    type: babelfish
-    show_when:
-      schema_type: review
   person_name:
     type: text
     show_when:
@@ -227,45 +209,6 @@ fields:
     type: list
     show_when:
       schema_type: recipe
-  software_title:
-    disableable: false
-    type: babelfish.source
-    field:
-      type: text
-    show_when:
-      schema_type: software
-  software_price:
-    type: text
-    mode: number
-    show_when:
-      schema_type: software
-  software_currency:
-    type: text
-    show_when:
-      schema_type: software
-  software_rating:
-    type: text
-    show_when:
-      schema_type: software
-  software_os:
-    type: text
-    show_when:
-      schema_type: software
-  software_category:
-    type: text
-    show_when:
-      schema_type: software
-  software_photo:
-    type: assets
-    container: main
-    max_files: 1
-    show_when:
-      schema_type: software
-  software_url:
-    type: text
-    mode: url
-    show_when:
-      schema_type: software
   article_type:
     type: select
     options:
