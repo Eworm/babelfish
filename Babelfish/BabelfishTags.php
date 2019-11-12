@@ -166,7 +166,7 @@ class BabelfishTags extends Tags
                 "fatContent": "' . $this->context('recipe_fat') . ' g"
             },
             "recipeIngredient": ' . $this->context('recipe_ingredients_list') . ',
-            "recipeInstructions": ""
+            "recipeInstructions": ' . $this->recipe_instructions($this->context['recipe_steps_list']) . '
         }
         </script>';
     }
@@ -290,13 +290,20 @@ class BabelfishTags extends Tags
      *
      * @return string
      */
-    private function recipe_instructions($instruction)
+    private function recipe_instructions($instructions)
     {
+        // dd($instructions);
         $list = '';
-        foreach ($contacts as $contact) {
-            // [{"@type": "HowToStep","text":"' . \implode("\"},{\"@type\": \"HowToStep\",\"text\":\"", $this->context('recipe_steps_list')) . '"}]
+        if (isset($instructions)) {
+            $list .= "[";
+            foreach ($instructions as $instruction) {
+                $list .= '{"@type": "HowToStep",';
+                $list .= '"text":"' . $instruction . '"},';
+                // TODO: remove comma from last each
+            }
+            $list .= "]';";
+            return $list;
         }
-        return $list;
     }
 
     /**
