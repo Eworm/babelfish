@@ -90,6 +90,8 @@ fields:
       value:
         type: text
         mode: number
+    show_when:
+      schema_type: product
   product_price:
     type: text
     mode: number
