@@ -4,6 +4,7 @@ namespace Statamic\Addons\Babelfish;
 
 use Carbon\Carbon;
 use Statamic\Extend\Tags;
+use Statamic\API\User;
 
 class BabelfishTags extends Tags
 {
@@ -48,6 +49,7 @@ class BabelfishTags extends Tags
      */
     private function article()
     {
+        $user = User::find($this->context('recipe_author'));
         return '<script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -64,7 +66,7 @@ class BabelfishTags extends Tags
             },
             "author": {
                 "@type": "Organization",
-                "name": "// TODO: "
+                "name": "' . $user->get('first_name') . ' ' . $user->get('last_name') .'"
             },
             "publisher": {
                 "@type": "Organization",
@@ -123,12 +125,51 @@ class BabelfishTags extends Tags
         "offers": {
             "@type": "Offer",
             "url": "' . $this->context('product_url') . '",
-            "priceCurrency": "// TODO: ' . $this->context('product_currency') . '",
+            "priceCurrency": "' . $this->context('product_currency') . '",
             "price": "' . $this->context('product_price') . '",
             "priceValidUntil": "' . $this->context('product_valid_until') . '",
             "availability": "' . $this->product_availabilty($this->context('product_availabilty')). '",
             "itemCondition": "' . $this->product_condition($this->context('product_condition')). '"
             }
+        }
+        </script>';
+    }
+
+    /**
+     * Recipe
+     *
+     * @return string
+     */
+    private function recipe()
+    {
+        $user = User::find($this->context('recipe_author'));
+        $steps = $this->context('recipe_steps_list');
+        return '<script type="application/ld+json">
+        {
+            "@context": "https://schema.org/",
+            "@type": "Recipe",
+            "name": "' . $this->context('recipe_title') . '",
+            "image": "' . $this->context('recipe_photo') . '",
+            "description": "' . $this->context('recipe_description') . '",
+            "keywords": "' . \implode(",", $this->context('recipe_keywords')) . '",
+            "author": {
+                "@type": "Person",
+                "name": "' . $user->get('first_name') . ' ' . $user->get('last_name') .'"
+            },
+            "prepTime": "PT' . $this->context('recipe_preparation_time') . 'M",
+            "cookTime": "PT' . $this->context('recipe_cook_time') . 'M",
+            "totalTime": "PT' . $this->context('recipe_total_time') . 'M",
+            "recipeCategory": "' . $this->context('recipe_category') . '",
+            "nutrition": {
+                "@type": "NutritionInformation",
+                "servingSize": "' . $this->context('recipe_serving_size') . '",
+                "calories": "' . $this->context('recipe_calories') . ' cal",
+                "fatContent": "' . $this->context('recipe_fat') . ' g"
+            },
+            "recipeIngredient": [
+                \'' . \implode("','", $this->context('recipe_ingredients_list')) . '\'
+            ],
+            "recipeInstructions": [{"@type": "HowToStep","text":"' . \implode("\"},{\"@type\": \"HowToStep\",\"text\":\"", $this->context('recipe_steps_list')) . '"}]
         }
         </script>';
     }
@@ -200,44 +241,6 @@ class BabelfishTags extends Tags
             $list .= '"' . $property['property'] . '": "' . $property['value'] . '",';
         }
         return $list;
-    }
-
-    /**
-     * Recipe
-     *
-     * @return string
-     */
-    private function recipe()
-    {
-        $steps = $this->context('recipe_steps_list');
-        return '<script type="application/ld+json">
-        {
-            "@context": "https://schema.org/",
-            "@type": "Recipe",
-            "name": "' . $this->context('recipe_title') . '",
-            "image": "' . $this->context('recipe_photo') . '",
-            "description": "' . $this->context('recipe_description') . '",
-            "keywords": "' . \implode(",", $this->context('recipe_keywords')) . '",
-            "author": {
-                "@type": "Person",
-                "name": "// TODO: "
-            },
-            "prepTime": "PT' . $this->context('recipe_preparation_time') . 'M",
-            "cookTime": "PT' . $this->context('recipe_cook_time') . 'M",
-            "totalTime": "PT' . $this->context('recipe_total_time') . 'M",
-            "recipeCategory": "' . $this->context('recipe_category') . '",
-            "nutrition": {
-                "@type": "NutritionInformation",
-                "servingSize": "' . $this->context('recipe_serving_size') . '",
-                "calories": "' . $this->context('recipe_calories') . ' cal",
-                "fatContent": "' . $this->context('recipe_fat') . ' g"
-            },
-            "recipeIngredient": [
-                \'' . \implode("','", $this->context('recipe_ingredients_list')) . '\'
-            ],
-            "recipeInstructions": [{"@type": "HowToStep","text":"' . \implode("\"},{\"@type\": \"HowToStep\",\"text\":\"", $this->context('recipe_steps_list')) . '"}]
-        }
-        </script>';
     }
 
     /**

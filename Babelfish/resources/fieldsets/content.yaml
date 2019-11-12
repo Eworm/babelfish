@@ -124,6 +124,7 @@ fields:
   recipe_author:
     type: users
     default: current
+    max_items: 1
     show_when:
       schema_type: recipe
   recipe_description:
@@ -237,6 +238,7 @@ fields:
   article_author:
     type: users
     default: current
+    max_items: 1
     show_when:
       schema_type: article
   article_publisher:
