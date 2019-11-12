@@ -1,0 +1,352 @@
+fields:
+  schema_type:
+    type: select
+    options:
+      - choose
+      - article
+      - person
+      - product
+      - recipe
+      - review
+      - service
+      - software
+    default: choose
+  snippet:
+    type: section
+    hide_when:
+      schema_type: choose
+  review_title:
+    disableable: false
+    type: babelfish.source
+    field:
+      type: text
+    show_when:
+      schema_type: review
+  review_author:
+    type: users
+    default: current
+    show_when:
+      schema_type: review
+  review_rating:
+    type: babelfish
+    show_when:
+      schema_type: review
+  person_name:
+    type: text
+    show_when:
+      schema_type: person
+  person_photo:
+    type: assets
+    container: main
+    max_files: 1
+    show_when:
+      schema_type: person
+  person_job_title:
+    type: text
+    show_when:
+      schema_type: person
+  person_url:
+    type: text
+    mode: url
+    show_when:
+      schema_type: person
+  person_company:
+    type: text
+    show_when:
+      schema_type: person
+  person_social_profiles:
+    type: list
+    show_when:
+      schema_type: person
+  product_name:
+    type: text
+    show_when:
+      schema_type: product
+  product_description:
+    type: text
+    show_when:
+      schema_type: product
+  product_brand:
+    type: text
+    show_when:
+      schema_type: product
+  product_image:
+    type: assets
+    container: main
+    max_files: 1
+    show_when:
+      schema_type: product
+  product_properties:
+    type: grid
+    fields:
+      property:
+        type: select
+        options:
+          - sku
+          - gtin8
+          - gtin13
+          - gtin14
+          - mpn
+      value:
+        type: text
+        mode: number
+  product_price:
+    type: text
+    mode: number
+    show_when:
+      schema_type: product
+  product_currency:
+    type: text
+    show_when:
+      schema_type: product
+  product_url:
+    type: text
+    mode: url
+    show_when:
+      schema_type: product
+  product_availabilty:
+    type: radio
+    options:
+      - in_stock
+      - out_of_stock
+      - online_only
+      - in_store_only
+      - preorder
+      - presale
+      - limited_availability
+      - soldout
+      - discontinued
+    show_when:
+      schema_type: product
+  product_condition:
+    type: radio
+    options:
+      - new
+      - used
+    show_when:
+      schema_type: product
+  product_valid_until:
+    type: date
+    allow_time: false
+    show_when:
+      schema_type: product
+  recipe_title:
+    disableable: false
+    type: babelfish.source
+    field:
+      type: text
+    show_when:
+      schema_type: recipe
+  recipe_author:
+    type: users
+    default: current
+    show_when:
+      schema_type: recipe
+  recipe_description:
+    type: text
+    show_when:
+      schema_type: recipe
+  recipe_photo:
+    type: assets
+    container: main
+    max_files: 1
+    show_when:
+      schema_type: recipe
+  recipe_category:
+    type: select
+    options:
+      - not_specified
+      - appetizer
+      - entree
+      - dessert
+    default: not_specified
+    show_when:
+      schema_type: recipe
+  recipe_keywords:
+    type: tags
+    show_when:
+      schema_type: recipe
+  recipe_times:
+    type: section
+    show_when:
+      schema_type: recipe
+  recipe_preparation_time:
+    width: 33
+    type: text
+    mode: number
+    show_when:
+      schema_type: recipe
+  recipe_cook_time:
+    width: 33
+    type: text
+    mode: number
+    show_when:
+      schema_type: recipe
+  recipe_total_time:
+    width: 33
+    type: text
+    mode: number
+    show_when:
+      schema_type: recipe
+  recipe_nutritional_value:
+    type: section
+    show_when:
+      schema_type: recipe
+  recipe_serving_size:
+    width: 33
+    type: text
+    show_when:
+      schema_type: recipe
+  recipe_calories:
+    width: 33
+    type: text
+    mode: number
+    show_when:
+      schema_type: recipe
+  recipe_fat:
+    width: 33
+    type: text
+    mode: number
+    show_when:
+      schema_type: recipe
+  recipe_ingredients:
+    type: section
+    show_when:
+      schema_type: recipe
+  recipe_ingredients_list:
+    type: list
+    show_when:
+      schema_type: recipe
+  recipe_steps:
+    type: section
+    show_when:
+      schema_type: recipe
+  recipe_steps_list:
+    type: list
+    show_when:
+      schema_type: recipe
+  software_title:
+    disableable: false
+    type: babelfish.source
+    field:
+      type: text
+    show_when:
+      schema_type: software
+  software_price:
+    type: text
+    mode: number
+    show_when:
+      schema_type: software
+  software_currency:
+    type: text
+    show_when:
+      schema_type: software
+  software_rating:
+    type: text
+    show_when:
+      schema_type: software
+  software_os:
+    type: text
+    show_when:
+      schema_type: software
+  software_category:
+    type: text
+    show_when:
+      schema_type: software
+  software_photo:
+    type: assets
+    container: main
+    max_files: 1
+    show_when:
+      schema_type: software
+  software_url:
+    type: text
+    mode: url
+    show_when:
+      schema_type: software
+  article_type:
+    type: select
+    options:
+      - article
+      - newsarticle
+      - blogpost
+    show_when:
+      schema_type: article
+  article_title:
+    disableable: false
+    type: babelfish.source
+    field:
+      type: text
+    show_when:
+      schema_type: article
+  article_description:
+    type: text
+    show_when:
+      schema_type: article
+  article_photo:
+    type: assets
+    container: main
+    max_files: 1
+    show_when:
+      schema_type: article
+  article_author:
+    type: users
+    default: current
+    show_when:
+      schema_type: article
+  article_publisher:
+    type: text
+    show_when:
+      schema_type: article
+  article_publisher_logo:
+    type: assets
+    container: main
+    max_files: 1
+    show_when:
+      schema_type: article
+  service_type:
+    type: text
+    show_when:
+      schema_type: service
+  service_area:
+    type: text
+    show_when:
+      schema_type: service
+  service_photo:
+    type: assets
+    container: main
+    max_files: 1
+    show_when:
+      schema_type: service
+  service_description:
+    type: text
+    show_when:
+      schema_type: service
+  service_provider:
+    type: text
+    show_when:
+      schema_type: service
+  service_address:
+    type: text
+    show_when:
+      schema_type: service
+  service_locality:
+    type: text
+    show_when:
+      schema_type: service
+  service_region:
+    type: text
+    show_when:
+      schema_type: service
+  service_postal:
+    type: text
+    show_when:
+      schema_type: service
+  service_telephone:
+    type: text
+    show_when:
+      schema_type: service
+  service_telephone:
+    type: text
+    show_when:
+      schema_type: service
