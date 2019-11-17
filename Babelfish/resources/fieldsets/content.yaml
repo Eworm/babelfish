@@ -5,35 +5,35 @@ fields:
       person:
         display: Person
         fields:
-          person_name:
+          Name:
             type: text
-          person_photo:
+          Photo:
             type: assets
             container: main
             max_files: 1
-          person_job_title:
+          Job title:
             type: text
-          person_url:
+          URL:
             type: text
             mode: url
-          person_company:
+          Company:
             type: text
-          person_social_profiles:
+          Social profiles:
             type: list
       product:
         display: Product
         fields:
-          product_name:
+          Name:
             type: text
-          product_description:
+          Description:
             type: text
-          product_brand:
+          Brand:
             type: text
-          product_image:
+          Image:
             type: assets
             container: main
             max_files: 1
-          product_properties:
+          Properties:
             type: grid
             fields:
               property:
@@ -47,190 +47,193 @@ fields:
               value:
                 type: text
                 mode: number
-          product_price:
+          Price:
             type: text
             mode: number
-          product_currency:
+          Currency:
             type: text
-          product_url:
+          URL:
             type: text
             mode: url
-          product_availabilty:
+          Availabilty:
             type: radio
             options:
-              - in_stock
-              - out_of_stock
-              - online_only
-              - in_store_only
-              - preorder
-              - presale
-              - limited_availability
-              - soldout
-              - discontinued
-          product_condition:
+              - In stock
+              - Out of stock
+              - Online only
+              - In store only
+              - Preorder
+              - Presale
+              - Limited availability
+              - Sold out
+              - Discontinued
+          Condition:
             type: radio
             options:
-              - new
-              - used
-          product_valid_until:
+              - New
+              - Used
+          Valid until:
             type: date
-            allow_time: false
+            allow time: false
       recipe:
         display: Recipe
         fields:
-          recipe_title:
+          Title:
             type: text
             field:
               type: text
-          recipe_author:
+          Author:
             type: users
             default: current
             max_items: 1
-          recipe_description:
+          Description:
             type: text
-          recipe_photo:
+          Photo:
             type: assets
             container: main
             max_files: 1
-          recipe_category:
+          Category:
             type: select
             options:
-              - not_specified
-              - appetizer
-              - entree
-              - dessert
-            default: not_specified
-          recipe_keywords:
+              - Not specified
+              - Appetizer
+              - Entree
+              - Dessert
+            default: Not specified
+          Keywords:
             type: tags
-          recipe_times:
+          Times:
             type: section
-          recipe_preparation_time:
+          Preparation time:
+            instructions: In minutes
             width: 33
             type: text
             mode: number
-          recipe_cook_time:
+          Cook time:
+            instructions: In minutes
             width: 33
             type: text
             mode: number
-          recipe_total_time:
+          Total time:
+            instructions: In minutes
             width: 33
             type: text
             mode: number
-          recipe_nutritional_value:
+          Nutritional_value:
             type: section
-          recipe_serving_size:
+          Serving size:
+            instructions: In whatever you want
             width: 33
             type: text
-          recipe_calories:
+          Calories:
+            instructions: In calories
             width: 33
             type: text
             mode: number
-          recipe_fat:
+          Fat:
+            instructions: In grams
             width: 33
             type: text
             mode: number
-          recipe_ingredients:
+          Ingredients:
             type: section
-          recipe_ingredients_list:
+          List of Ingredients:
             type: list
-          recipe_steps:
+          Steps:
             type: section
-          recipe_steps_list:
+          List of steps:
             type: list
       article:
         display: Article
         fields:
-          article_type:
+          Type:
             type: select
             options:
-              - article
-              - newsarticle
-              - blogpost
-          article_title:
+              - Article
+              - Newsarticle
+              - Blogpost
+          Title:
             type: text
             field:
               type: text
-          article_description:
+          Description:
             type: text
-          article_photo:
+          Photo:
             type: assets
             container: main
             max_files: 1
-          article_author:
+          Author:
             type: users
             default: current
             max_items: 1
-          article_publisher:
+          Publisher:
             type: text
-          article_publisher_logo:
+          Publisher logo:
             type: assets
             container: main
             max_files: 1
       service:
         display: Service
         fields:
-          service_type:
+          Type:
             type: text
-          service_area:
+          Area:
             type: text
-          service_photo:
+          Photo:
             type: assets
             container: main
             max_files: 1
-          service_description:
+          Description:
             type: text
-          service_provider:
+          Provider:
             type: text
-          service_address:
+          Address:
             type: text
-          service_locality:
+          Locality:
             type: text
-          service_region:
+          Region:
             type: text
-          service_postal:
+          Postal code:
             type: text
-          service_telephone:
-            type: text
-          service_telephone:
+          Telephone:
             type: text
       organization:
         display: Organization
         fields:
-          organization_name:
+          Name:
             type: text
-          organization_alternate_name:
+          Alternate name:
             type: text
-          organization_type:
+          Type:
             type: select
             options:
-              - organization
-              - airline
-              - consortium
-              - corporation
-              - educationalorganization
-              - governmentorganization
-              - librarysystem
-              - medicalorganization
-              - ngo
-              - newsmediaorganization
-              - performinggroup
-              - project
-              - sportsorganization
-              - workersunion
-              - newsmediaorganization
-          organization_url:
+              - Organization
+              - Airline
+              - Consortium
+              - Corporation
+              - Educational organization
+              - Government organization
+              - Library system
+              - Medical organization
+              - NGO
+              - Newsmedia organization
+              - Performinggroup
+              - Project
+              - Sport sorganization
+              - Workers union
+          URL:
             type: text
             mode: url
-          organization_logo:
+          Logo:
             type: assets
             container: main
             max_files: 1
-          organization_social_profiles:
+          Social_profiles:
             type: list
-          organization_contacts:
+          Contacts:
             type: grid
             fields:
-              type:
+              Type:
                 type: select
                 options:
                   - Customer service
@@ -244,14 +247,14 @@ fields:
                   - Baggage tracking
                   - Roadside assistance
                   - Package tracking
-              phone:
+              Phone:
                 type: text
                 mode: tel
-              areas:
+              Areas:
                 type: list
-              languages:
+              Languages:
                 type: list
-              extras:
+              Extras:
                 type: checkboxes
                 options:
                   - Toll free

@@ -18,24 +18,27 @@ class BabelfishTags extends Tags
         if (isset($this->context['schema_type'])) :
             $schema = $this->context['schema_type'];
 
-        switch ($schema) {
+        foreach ($schema as $type) {
+            $s_type = $type['type'];
+            switch ($s_type) {
             case "article":
-                return $this->article();
+                return $this->article($type);
                 break;
             case "organization":
-                return $this->organization();
+                return $this->organization($type);
                 break;
             case "person":
-                return $this->person();
+                return $this->person($type);
                 break;
             case "product":
-                return $this->product();
+                return $this->product($type);
                 break;
             case "recipe":
-                return $this->recipe();
+                return $this->recipe($type);
                 break;
             case "service":
                 break;
+        }
         }
 
         endif;
@@ -46,22 +49,22 @@ class BabelfishTags extends Tags
      *
      * @return string
      */
-    private function article()
+    private function article($type)
     {
-        $user = User::find($this->context('article_author'));
+        $user = User::find($this->issetor('article_author'));
         return '<script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "' . ucfirst($this->context('article_type')) . '",
+            "@type": "' . $this->issetor($type['Type']) . '",
             "mainEntityOfPage": {
                 "@type": "WebPage",
                 "@id": "woutmager.nl"
             },
-            "headline": "' . $this->context('article_title') . '",
-            "description": "' . $this->context('article_description') . '",
+            "headline": "' . $this->issetor($type['Title']) . '",
+            "description": "' . $this->issetor($type['Description']) . '",
             "image": {
                 "@type": "ImageObject",
-                "url": "' . $this->context('article_photo') . '"
+                "url": "' . $this->issetor($type['Photo']) . '"
             },
             "author": {
                 "@type": "Organization",
@@ -69,13 +72,13 @@ class BabelfishTags extends Tags
             },
             "publisher": {
                 "@type": "Organization",
-                "name": "' . $this->context('article_publisher') . '",
+                "name": "' . $this->issetor($type['Publisher']) . '",
                 "logo": {
                     "@type": "ImageObject",
-                    "url": "' . $this->context('article_publisher_logo') . '"
+                    "url": "' . $this->issetor($type['Publisher logo']) . '"
                 }
             },
-            "datePublished": "' . date_format($this->context('date'), "Y-m-d") . '",
+            "datePublished": "' . date_format($this->issetor('date'), "Y-m-d") . '",
             "dateModified": "// TODO: "
         }
         </script>';
@@ -86,20 +89,20 @@ class BabelfishTags extends Tags
      *
      * @return string
      */
-    private function person()
+    private function person($type)
     {
         return '<script type="application/ld+json">
         {
             "@context": "https://schema.org/",
             "@type": "Person",
-            "name": "' . $this->context('person_name') . '",
-            "url": "' . $this->context('person_url') . '",
-            "image": "' . $this->context('person_photo') . '",
-            "sameAs": ' . $this->context('person_social_profiles') . '",
-            "jobTitle": "' . $this->context('person_job_title') . '",
+            "name": "' . $this->issetor($type['Name']) . '",
+            "url": "' . $this->issetor($type['URL']) . '",
+            "image": "' . $this->issetor($type['Photo']) . '",
+            "sameAs": ' . $this->issetor($type['Social profiles']) . '",
+            "jobTitle": "' . $this->issetor($type['Job title']) . '",
             "worksFor": {
                 "@type": "Organization",
-                "name": "' . $this->context('person_company') . '"
+                "name": "' . $this->issetor($type['Company']) . '"
             }
         }
         </script>';
@@ -110,25 +113,25 @@ class BabelfishTags extends Tags
      *
      * @return string
      */
-    private function product()
+    private function product($type)
     {
         return '<script type="application/ld+json">
         {
         "@context": "https://schema.org/",
         "@type": "Product",
-        "name": "' . $this->context('product_name') . '",
-        "image": "' . $this->context('product_image') . '",
-        "description": "' . $this->context('product_description') . '",
-        "brand": "' . $this->context('product_brand') . '",
-        ' . $this->product_properties($this->context['product_properties']) . '
+        "name": "' . $this->issetor($type['Name']) . '",
+        "image": "' . $this->issetor($type['Image']) . '",
+        "description": "' . $this->issetor($type['Description']) . '",
+        "brand": "' . $this->issetor($type['Brand']) . '",
+        ' . $this->product_properties($type['Properties']) . '
         "offers": {
             "@type": "Offer",
-            "url": "' . $this->context('product_url') . '",
-            "priceCurrency": "' . $this->context('product_currency') . '",
-            "price": "' . $this->context('product_price') . '",
-            "priceValidUntil": "' . $this->context('product_valid_until') . '",
-            "availability": "' . $this->product_availabilty($this->context('product_availabilty')). '",
-            "itemCondition": "' . $this->product_condition($this->context('product_condition')). '"
+            "url": "' . $this->issetor($type['URL']) . '",
+            "priceCurrency": "' . $this->issetor($type['Currency']) . '",
+            "price": "' . $this->issetor($type['Price']) . '",
+            "priceValidUntil": "' . $this->issetor($type['Valid until']) . '",
+            "availability": "' . $this->product_availabilty($this->issetor($type['Availabilty'])). '",
+            "itemCondition": "' . $this->product_condition($this->issetor($type['Condition'])). '"
             }
         }
         </script>';
@@ -139,34 +142,34 @@ class BabelfishTags extends Tags
      *
      * @return string
      */
-    private function recipe()
+    private function recipe($type)
     {
-        $user = User::find($this->context('recipe_author'));
-        $steps = $this->context('recipe_steps_list');
+        $user = User::find($type['Author']);
+        $steps = $type['List of steps'];
         return '<script type="application/ld+json">
         {
             "@context": "https://schema.org/",
             "@type": "Recipe",
-            "name": "' . $this->context('recipe_title') . '",
-            "image": "' . $this->context('recipe_photo') . '",
-            "description": "' . $this->context('recipe_description') . '",
-            "keywords": "' . $this->context('recipe_keywords') . '",
+            "name": "' . $this->issetor($type['Title']) . '",
+            "image": "' . $this->issetor($type['Photo']) . '",
+            "description": "' . $this->issetor($type['Description']) . '",
+            "keywords": "",
             "author": {
                 "@type": "Person",
                 "name": "' . $user->get('first_name') . ' ' . $user->get('last_name') .'"
             },
-            "prepTime": "PT' . $this->context('recipe_preparation_time') . 'M",
-            "cookTime": "PT' . $this->context('recipe_cook_time') . 'M",
-            "totalTime": "PT' . $this->context('recipe_total_time') . 'M",
-            "recipeCategory": "' . $this->context('recipe_category') . '",
+            "prepTime": "PT' . $this->issetor($type['Preparation time']) . 'M",
+            "cookTime": "PT' . $this->issetor($type['Cook time']) . 'M",
+            "totalTime": "PT' . $this->issetor($type['Total time']) . 'M",
+            "recipeCategory": "' . $this->issetor($type['Category']) . '",
             "nutrition": {
                 "@type": "NutritionInformation",
-                "servingSize": "' . $this->context('recipe_serving_size') . '",
-                "calories": "' . $this->context('recipe_calories') . ' cal",
-                "fatContent": "' . $this->context('recipe_fat') . ' g"
+                "servingSize": "' . $this->issetor($type['Serving size']) . '",
+                "calories": "' . $this->issetor($type['Calories']) . ' cal",
+                "fatContent": "' . $this->issetor($type['Fat']) . ' g"
             },
-            "recipeIngredient": ' . $this->context('recipe_ingredients_list') . ',
-            "recipeInstructions": ' . $this->recipe_instructions($this->context['recipe_steps_list']) . '
+            "recipeIngredient": "",
+            "recipeInstructions": ' . $this->recipe_instructions($type['List of steps']) . '
         }
         </script>';
     }
@@ -176,18 +179,18 @@ class BabelfishTags extends Tags
      *
      * @return string
      */
-    private function organization()
+    private function organization($type)
     {
         return '<script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "' . $this->context('organization_type') . '",
-            "name": "' . $this->context('organization_name') . '",
-            "alternateName": "' . $this->context('organization_alternate_name') . '",
-            "url": "' . $this->context('organization_url') . '",
-            "logo": "' . $this->context('organization_logo') . '",
-            "contactPoint": ' . $this->organization_contacts($this->context['organization_contacts']) . ',
-            "sameAs": ' . $this->context('organization_social_profiles') . ',
+            "@type": "' . $this->issetor($type['Type']) . '",
+            "name": "' . $this->issetor($type['Name']) . '",
+            "alternateName": "' . $this->issetor($type['Alternate name']) . '",
+            "url": "' . $this->issetor($type['URL']) . '",
+            "logo": "' . $this->issetor($type['Logo']) . '",
+            "contactPoint": ' . $this->organization_contacts($type['Contacts']) . ',
+            "sameAs": ' . $this->issetor($type['Social profiles']) . ',
         }
         </script>';
     }
@@ -200,31 +203,31 @@ class BabelfishTags extends Tags
     private function product_availabilty($availability)
     {
         switch ($availability) {
-            case "in_stock":
+            case "In stock":
                 return 'https://schema.org/InStock';
                 break;
-            case "out_of_stock":
+            case "Out of stock":
                 return 'https://schema.org/OutOfStock';
                 break;
-            case "online_only":
+            case "Online only":
                 return 'https://schema.org/OnlineOnly';
                 break;
-            case "in_store_only":
+            case "In store only":
                 return 'https://schema.org/InStoreOnly';
                 break;
-            case "preorder":
+            case "Preorder":
                 return 'https://schema.org/PreOrder';
                 break;
-            case "presale":
+            case "Presale":
                 return 'https://schema.org/PreSale';
                 break;
-            case "limited_availability":
+            case "Limited availability":
                 return 'https://schema.org/LimitedAvailability';
                 break;
-            case "soldout":
+            case "Sold out":
                 return 'https://schema.org/SoldOut';
                 break;
-            case "discontinued":
+            case "Discontinued":
                 return 'https://schema.org/Discontinued';
                 break;
         }
@@ -238,10 +241,10 @@ class BabelfishTags extends Tags
     private function product_condition($availability)
     {
         switch ($availability) {
-            case "new":
+            case "New":
                 return 'https://schema.org/NewCondition';
                 break;
-            case "used":
+            case "Used":
                 return 'https://schema.org/UsedCondition';
                 break;
         }
@@ -324,20 +327,27 @@ class BabelfishTags extends Tags
 
                     // $ft has 1
                     return '"' . \implode("','", $ft) . '"';
-
                 } elseif (count($ft) > 1) {
 
                     // $ft has more than 1
                     return "['" . \implode("','", $ft) . "']";
-
                 }
             } else {
                 // $ft is a string
                 return $ft;
             }
-
         } else {
             return null;
         }
+    }
+
+    /**
+     * Get a fieldtype value
+     *
+     * @return string
+     */
+    public function issetor(&$var, $default = false)
+    {
+        return isset($var) ? $var : $default;
     }
 }
