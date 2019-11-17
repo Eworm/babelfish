@@ -15,8 +15,7 @@ class BabelfishListener extends Listener
      * @var array
      */
     public $events = [
-        \Statamic\Events\Data\FindingFieldset::class => 'addSnippetsTab',
-        'cp.add_to_head' => 'addToHead'
+        \Statamic\Events\Data\FindingFieldset::class => 'addSnippetsTab'
     ];
 
     /**
@@ -38,27 +37,5 @@ class BabelfishListener extends Listener
         $contents = $fieldset->contents();
         $contents['sections'] = $sections;
         $fieldset->contents($contents);
-    }
-
-    protected function getPlaceholder($key, $field, $data)
-    {
-        if (! $data) {
-            return;
-        }
-
-        $vars = (new TagData)
-            ->with(Settings::load()->get('defaults'))
-            ->with($data->getWithCascade('anchorman', []))
-            ->withCurrent($data)
-            ->get();
-
-        return array_get($vars, $key);
-    }
-
-    public function addToHead()
-    {
-        $assetContainer = $this->getConfig('asset_container');
-        $suggestions = json_encode((new FieldSuggestions)->suggestions());
-        return "<script>var Babelfish = { assetContainer: '{$assetContainer}', fieldSuggestions: {$suggestions} };</script>";
     }
 }

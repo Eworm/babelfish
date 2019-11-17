@@ -1,374 +1,258 @@
 fields:
   schema_type:
-    type: select
-    options:
-      - choose
-      - article
-      - organization
-      - person
-      - product
-      - recipe
-      - service
-    default: choose
-  snippet:
-    type: section
-    hide_when:
-      schema_type: choose
-  person_name:
-    type: text
-    show_when:
-      schema_type: person
-  person_photo:
-    type: assets
-    container: main
-    max_files: 1
-    show_when:
-      schema_type: person
-  person_job_title:
-    type: text
-    show_when:
-      schema_type: person
-  person_url:
-    type: text
-    mode: url
-    show_when:
-      schema_type: person
-  person_company:
-    type: text
-    show_when:
-      schema_type: person
-  person_social_profiles:
-    type: list
-    show_when:
-      schema_type: person
-  product_name:
-    type: text
-    show_when:
-      schema_type: product
-  product_description:
-    type: text
-    show_when:
-      schema_type: product
-  product_brand:
-    type: text
-    show_when:
-      schema_type: product
-  product_image:
-    type: assets
-    container: main
-    max_files: 1
-    show_when:
-      schema_type: product
-  product_properties:
-    type: grid
-    fields:
-      property:
-        type: select
-        options:
-          - sku
-          - gtin8
-          - gtin13
-          - gtin14
-          - mpn
-      value:
-        type: text
-        mode: number
-    show_when:
-      schema_type: product
-  product_price:
-    type: text
-    mode: number
-    show_when:
-      schema_type: product
-  product_currency:
-    type: text
-    show_when:
-      schema_type: product
-  product_url:
-    type: text
-    mode: url
-    show_when:
-      schema_type: product
-  product_availabilty:
-    type: radio
-    options:
-      - in_stock
-      - out_of_stock
-      - online_only
-      - in_store_only
-      - preorder
-      - presale
-      - limited_availability
-      - soldout
-      - discontinued
-    show_when:
-      schema_type: product
-  product_condition:
-    type: radio
-    options:
-      - new
-      - used
-    show_when:
-      schema_type: product
-  product_valid_until:
-    type: date
-    allow_time: false
-    show_when:
-      schema_type: product
-  recipe_title:
-    disableable: false
-    type: babelfish.source
-    field:
-      type: text
-    show_when:
-      schema_type: recipe
-  recipe_author:
-    type: users
-    default: current
-    max_items: 1
-    show_when:
-      schema_type: recipe
-  recipe_description:
-    type: text
-    show_when:
-      schema_type: recipe
-  recipe_photo:
-    type: assets
-    container: main
-    max_files: 1
-    show_when:
-      schema_type: recipe
-  recipe_category:
-    type: select
-    options:
-      - not_specified
-      - appetizer
-      - entree
-      - dessert
-    default: not_specified
-    show_when:
-      schema_type: recipe
-  recipe_keywords:
-    type: tags
-    show_when:
-      schema_type: recipe
-  recipe_times:
-    type: section
-    show_when:
-      schema_type: recipe
-  recipe_preparation_time:
-    width: 33
-    type: text
-    mode: number
-    show_when:
-      schema_type: recipe
-  recipe_cook_time:
-    width: 33
-    type: text
-    mode: number
-    show_when:
-      schema_type: recipe
-  recipe_total_time:
-    width: 33
-    type: text
-    mode: number
-    show_when:
-      schema_type: recipe
-  recipe_nutritional_value:
-    type: section
-    show_when:
-      schema_type: recipe
-  recipe_serving_size:
-    width: 33
-    type: text
-    show_when:
-      schema_type: recipe
-  recipe_calories:
-    width: 33
-    type: text
-    mode: number
-    show_when:
-      schema_type: recipe
-  recipe_fat:
-    width: 33
-    type: text
-    mode: number
-    show_when:
-      schema_type: recipe
-  recipe_ingredients:
-    type: section
-    show_when:
-      schema_type: recipe
-  recipe_ingredients_list:
-    type: list
-    show_when:
-      schema_type: recipe
-  recipe_steps:
-    type: section
-    show_when:
-      schema_type: recipe
-  recipe_steps_list:
-    type: list
-    show_when:
-      schema_type: recipe
-  article_type:
-    type: select
-    options:
-      - article
-      - newsarticle
-      - blogpost
-    show_when:
-      schema_type: article
-  article_title:
-    disableable: false
-    type: babelfish.source
-    field:
-      type: text
-    show_when:
-      schema_type: article
-  article_description:
-    type: text
-    show_when:
-      schema_type: article
-  article_photo:
-    type: assets
-    container: main
-    max_files: 1
-    show_when:
-      schema_type: article
-  article_author:
-    type: users
-    default: current
-    max_items: 1
-    show_when:
-      schema_type: article
-  article_publisher:
-    type: text
-    show_when:
-      schema_type: article
-  article_publisher_logo:
-    type: assets
-    container: main
-    max_files: 1
-    show_when:
-      schema_type: article
-  service_type:
-    type: text
-    show_when:
-      schema_type: service
-  service_area:
-    type: text
-    show_when:
-      schema_type: service
-  service_photo:
-    type: assets
-    container: main
-    max_files: 1
-    show_when:
-      schema_type: service
-  service_description:
-    type: text
-    show_when:
-      schema_type: service
-  service_provider:
-    type: text
-    show_when:
-      schema_type: service
-  service_address:
-    type: text
-    show_when:
-      schema_type: service
-  service_locality:
-    type: text
-    show_when:
-      schema_type: service
-  service_region:
-    type: text
-    show_when:
-      schema_type: service
-  service_postal:
-    type: text
-    show_when:
-      schema_type: service
-  service_telephone:
-    type: text
-    show_when:
-      schema_type: service
-  service_telephone:
-    type: text
-    show_when:
-      schema_type: service
-  organization_name:
-    type: text
-    show_when:
-      schema_type: organization
-  organization_alternate_name:
-    type: text
-    show_when:
-      schema_type: organization
-  organization_type:
-    type: select
-    options:
-      - organization
-      - airline
-      - consortium
-      - corporation
-      - educationalorganization
-      - governmentorganization
-      - librarysystem
-      - medicalorganization
-      - ngo
-      - newsmediaorganization
-      - performinggroup
-      - project
-      - sportsorganization
-      - workersunion
-      - newsmediaorganization
-    show_when:
-      schema_type: organization
-  organization_url:
-    type: text
-    mode: url
-    show_when:
-      schema_type: organization
-  organization_logo:
-    type: assets
-    container: main
-    max_files: 1
-    show_when:
-      schema_type: organization
-  organization_social_profiles:
-    type: list
-    show_when:
-      schema_type: organization
-  organization_contacts:
-    type: grid
-    fields:
-      type:
-        type: select
-        options:
-          - customer_service
-          - technical_support
-          - billing_support
-          - bill_payment
-          - sales
-          - reservations
-          - credit_card_support
-          - emergency
-          - baggage_tracking
-          - roadside_assistance
-          - package_tracking
-      phone:
-        type: text
-        mode: tel
-      areas:
-        type: list
-      languages:
-        type: list
-      extras:
-        type: checkboxes
-        options:
-          - toll_free
-          - hearing_impared_support
-    show_when:
-      schema_type: organization
+    type: replicator
+    sets:
+      person:
+        display: Person
+        fields:
+          person_name:
+            type: text
+          person_photo:
+            type: assets
+            container: main
+            max_files: 1
+          person_job_title:
+            type: text
+          person_url:
+            type: text
+            mode: url
+          person_company:
+            type: text
+          person_social_profiles:
+            type: list
+      product:
+        display: Product
+        fields:
+          product_name:
+            type: text
+          product_description:
+            type: text
+          product_brand:
+            type: text
+          product_image:
+            type: assets
+            container: main
+            max_files: 1
+          product_properties:
+            type: grid
+            fields:
+              property:
+                type: select
+                options:
+                  - sku
+                  - gtin8
+                  - gtin13
+                  - gtin14
+                  - mpn
+              value:
+                type: text
+                mode: number
+          product_price:
+            type: text
+            mode: number
+          product_currency:
+            type: text
+          product_url:
+            type: text
+            mode: url
+          product_availabilty:
+            type: radio
+            options:
+              - in_stock
+              - out_of_stock
+              - online_only
+              - in_store_only
+              - preorder
+              - presale
+              - limited_availability
+              - soldout
+              - discontinued
+          product_condition:
+            type: radio
+            options:
+              - new
+              - used
+          product_valid_until:
+            type: date
+            allow_time: false
+      recipe:
+        display: Recipe
+        fields:
+          recipe_title:
+            type: text
+            field:
+              type: text
+          recipe_author:
+            type: users
+            default: current
+            max_items: 1
+          recipe_description:
+            type: text
+          recipe_photo:
+            type: assets
+            container: main
+            max_files: 1
+          recipe_category:
+            type: select
+            options:
+              - not_specified
+              - appetizer
+              - entree
+              - dessert
+            default: not_specified
+          recipe_keywords:
+            type: tags
+          recipe_times:
+            type: section
+          recipe_preparation_time:
+            width: 33
+            type: text
+            mode: number
+          recipe_cook_time:
+            width: 33
+            type: text
+            mode: number
+          recipe_total_time:
+            width: 33
+            type: text
+            mode: number
+          recipe_nutritional_value:
+            type: section
+          recipe_serving_size:
+            width: 33
+            type: text
+          recipe_calories:
+            width: 33
+            type: text
+            mode: number
+          recipe_fat:
+            width: 33
+            type: text
+            mode: number
+          recipe_ingredients:
+            type: section
+          recipe_ingredients_list:
+            type: list
+          recipe_steps:
+            type: section
+          recipe_steps_list:
+            type: list
+      article:
+        display: Article
+        fields:
+          article_type:
+            type: select
+            options:
+              - article
+              - newsarticle
+              - blogpost
+          article_title:
+            type: text
+            field:
+              type: text
+          article_description:
+            type: text
+          article_photo:
+            type: assets
+            container: main
+            max_files: 1
+          article_author:
+            type: users
+            default: current
+            max_items: 1
+          article_publisher:
+            type: text
+          article_publisher_logo:
+            type: assets
+            container: main
+            max_files: 1
+      service:
+        display: Service
+        fields:
+          service_type:
+            type: text
+          service_area:
+            type: text
+          service_photo:
+            type: assets
+            container: main
+            max_files: 1
+          service_description:
+            type: text
+          service_provider:
+            type: text
+          service_address:
+            type: text
+          service_locality:
+            type: text
+          service_region:
+            type: text
+          service_postal:
+            type: text
+          service_telephone:
+            type: text
+          service_telephone:
+            type: text
+      organization:
+        display: Organization
+        fields:
+          organization_name:
+            type: text
+          organization_alternate_name:
+            type: text
+          organization_type:
+            type: select
+            options:
+              - organization
+              - airline
+              - consortium
+              - corporation
+              - educationalorganization
+              - governmentorganization
+              - librarysystem
+              - medicalorganization
+              - ngo
+              - newsmediaorganization
+              - performinggroup
+              - project
+              - sportsorganization
+              - workersunion
+              - newsmediaorganization
+          organization_url:
+            type: text
+            mode: url
+          organization_logo:
+            type: assets
+            container: main
+            max_files: 1
+          organization_social_profiles:
+            type: list
+          organization_contacts:
+            type: grid
+            fields:
+              type:
+                type: select
+                options:
+                  - Customer service
+                  - Rechnical support
+                  - Billing support
+                  - Bill payment
+                  - Sales
+                  - Reservations
+                  - Credit card support
+                  - Emergency
+                  - Baggage tracking
+                  - Roadside assistance
+                  - Package tracking
+              phone:
+                type: text
+                mode: tel
+              areas:
+                type: list
+              languages:
+                type: list
+              extras:
+                type: checkboxes
+                options:
+                  - Toll free
+                  - Hearing impared support
