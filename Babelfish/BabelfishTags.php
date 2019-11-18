@@ -149,7 +149,7 @@ class BabelfishTags extends Tags
             "name": "' . $this->issetor($type['Title']) . '",
             "image": "' . $this->issetor($type['Photo']) . '",
             "description": "' . $this->issetor($type['Description']) . '",
-            "keywords": "",
+            "keywords": ' . $this->context($type['Keywords']) . ',
             "author": {
                 "@type": "Person",
                 "name": "' . $user->get('first_name') . ' ' . $user->get('last_name') .'"
