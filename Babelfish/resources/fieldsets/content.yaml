@@ -237,3 +237,11 @@ fields:
                 options:
                   - Toll free
                   - Hearing impared support
+      website:
+        display: Website
+        fields:
+          Name:
+            type: text
+          URL:
+            type: text
+            mode: url

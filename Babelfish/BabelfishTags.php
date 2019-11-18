@@ -32,6 +32,8 @@ class BabelfishTags extends Tags
                 $schemas[] = $this->product($type);
             } elseif ($type['type'] == 'article') {
                 $schemas[] = $this->article($type);
+            } elseif ($type['type'] == 'website') {
+                $schemas[] = $this->website($type);
             }
         }
 
@@ -188,6 +190,23 @@ class BabelfishTags extends Tags
             "logo": "' . $this->issetor($type['Logo']) . '",
             "contactPoint": ' . $this->organization_contacts($type['Contacts']) . ',
             "sameAs": ' . $this->context($type['Social profiles']) . '
+        }
+        </script>';
+    }
+
+    /**
+     * Website
+     *
+     * @return string
+     */
+    private function website($type)
+    {
+        return '<script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "WebSite",
+            "name": "' . $this->issetor($type['Name']) . '",
+            "url": "' . $this->issetor($type['URL']) . '",
         }
         </script>';
     }
