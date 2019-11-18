@@ -172,31 +172,6 @@ fields:
             type: assets
             container: main
             max_files: 1
-      service:
-        display: Service
-        fields:
-          Type:
-            type: text
-          Area:
-            type: text
-          Photo:
-            type: assets
-            container: main
-            max_files: 1
-          Description:
-            type: text
-          Provider:
-            type: text
-          Address:
-            type: text
-          Locality:
-            type: text
-          Region:
-            type: text
-          Postal code:
-            type: text
-          Telephone:
-            type: text
       organization:
         display: Organization
         fields:
@@ -207,7 +182,6 @@ fields:
           Type:
             type: select
             options:
-              - Organization
               - Airline
               - Consortium
               - Corporation
@@ -217,9 +191,10 @@ fields:
               - Medical organization
               - NGO
               - Newsmedia organization
+              - Organization
               - Performing group
               - Project
-              - Sport sorganization
+              - Sports organization
               - Workers union
           URL:
             type: text
