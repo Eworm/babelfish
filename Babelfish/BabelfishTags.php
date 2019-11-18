@@ -149,6 +149,7 @@ class BabelfishTags extends Tags
             "name": "' . $this->issetor($type['Title']) . '",
             "image": "' . $this->issetor($type['Photo']) . '",
             "description": "' . $this->issetor($type['Description']) . '",
+            "recipeCuisine": "' . $this->issetor($type['Cuisine']) . '",
             "keywords": ' . $this->context($type['Keywords']) . ',
             "author": {
                 "@type": "Person",
@@ -164,7 +165,7 @@ class BabelfishTags extends Tags
                 "calories": "' . $this->issetor($type['Calories']) . ' cal",
                 "fatContent": "' . $this->issetor($type['Fat']) . ' g"
             },
-            "recipeIngredient": "",
+            "recipeIngredient": ' . $this->context($type['List of Ingredients']) . ',
             "recipeInstructions": ' . $this->recipe_instructions($type['List of steps']) . '
         }
         </script>';

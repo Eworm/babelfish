@@ -88,6 +88,9 @@ fields:
             max_items: 1
           Description:
             type: text
+          Cuisine:
+            instructions: "The cuisine of the recipe (for example, French or Ethiopian)"
+            type: text
           Photo:
             type: assets
             container: main
