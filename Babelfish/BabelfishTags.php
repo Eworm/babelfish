@@ -292,13 +292,18 @@ class BabelfishTags extends Tags
     {
         $list = '';
         if (isset($instructions)) {
+            $hasComma = false;
             $list .= "[";
             foreach ($instructions as $instruction) {
                 $list .= '{"@type": "HowToStep",';
-                $list .= '"text":"' . $instruction . '"},';
+                $list .= '"text":"' . $instruction . '"}';
+                if (!$hasComma){
+                    $list .= ",";
+                }
                 // TODO: remove comma from last each
+                $hasComma = true;
             }
-            $list .= "]';";
+            $list .= "]";
             return $list;
         }
     }
