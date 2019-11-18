@@ -2,6 +2,7 @@
 
 namespace Statamic\Addons\Babelfish;
 
+use Statamic\Data\Data;
 use Carbon\Carbon;
 use Statamic\Extend\Tags;
 use Statamic\API\User;
@@ -73,8 +74,8 @@ class BabelfishTags extends Tags
                     "url": "' . $this->issetor($type['Publisher logo']) . '"
                 }
             },
-            "datePublished": " // TODO: ",
-            "dateModified": "// TODO: "
+            "datePublished": "' . date_format($this->context['date'], "Y-m-d") . '",
+            "dateModified": "' . date("Y-m-d", $this->context['last_modified']) . '"
         }
         </script>';
     }
@@ -179,13 +180,13 @@ class BabelfishTags extends Tags
         return '<script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "' . $this->issetor($type['Type']) . '",
+            "@type": "' . str_replace(' ', '', $this->issetor($type['Type'])) . '",
             "name": "' . $this->issetor($type['Name']) . '",
             "alternateName": "' . $this->issetor($type['Alternate name']) . '",
             "url": "' . $this->issetor($type['URL']) . '",
             "logo": "' . $this->issetor($type['Logo']) . '",
             "contactPoint": ' . $this->organization_contacts($type['Contacts']) . ',
-            "sameAs": "// TODO:",
+            "sameAs": ' . $this->context($type['Social profiles']) . '
         }
         </script>';
     }
@@ -271,13 +272,13 @@ class BabelfishTags extends Tags
         $list = '';
         if (isset($contacts)) {
             foreach ($contacts as $contact) {
-                $list .= '{';
-                $list .= '"@type": "ContactPoint",';
-                $list .= '"telephone": "' . $contact['Phone'] . '",';
-                $list .= '"contactType": "' . $contact['Type'] . '",';
-                $list .= '"contactOption": // TODO: ["TollFree","HearingImpairedSupported"],';
-                $list .= '"availableLanguage": // TODO: ["en","es"]';
-                $list .= '},';
+                $list .= '{' . "\r\n";
+                $list .= '"@type": "ContactPoint",' . "\r\n";
+                $list .= '"telephone": "' . $contact['Phone'] . '",' . "\r\n";
+                $list .= '"contactType": "' . $contact['Type'] . '",' . "\r\n";
+                $list .= '"contactOption": ' . $this->context($contact['Extras']) . ',' . "\r\n";
+                $list .= '"availableLanguage": ' . $this->context($contact['Languages']) . '' . "\r\n";
+                $list .= '}';
             }
             return $list;
         }
@@ -300,7 +301,6 @@ class BabelfishTags extends Tags
                 if (!$hasComma){
                     $list .= ",";
                 }
-                // TODO: remove comma from last each
                 $hasComma = true;
             }
             $list .= "]";
@@ -315,26 +315,23 @@ class BabelfishTags extends Tags
      */
     private function context($fieldtype)
     {
-        if (isset($this->context[$fieldtype])) {
+        if (isset($fieldtype)) {
 
-            // $fieldtype exists
-            $ft = $this->context[$fieldtype];
+            if (is_array($fieldtype)) {
 
-            if (is_array($ft)) {
+                // $fieldtype is an array
+                if (count($fieldtype) == 1) {
 
-                // $ft is an array
-                if (count($ft) == 1) {
+                    // $fieldtype has 1
+                    return '"' . \implode("','", $fieldtype) . '"';
+                } elseif (count($fieldtype) > 1) {
 
-                    // $ft has 1
-                    return '"' . \implode("','", $ft) . '"';
-                } elseif (count($ft) > 1) {
-
-                    // $ft has more than 1
-                    return "['" . \implode("','", $ft) . "']";
+                    // $fieldtype has more than 1
+                    return "[\"" . \implode("\",\"", $fieldtype) . "\"]";
                 }
             } else {
-                // $ft is a string
-                return $ft;
+                // $fieldtype is a string
+                return $fieldtype;
             }
         } else {
             return null;
