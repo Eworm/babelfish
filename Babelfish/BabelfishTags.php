@@ -18,28 +18,23 @@ class BabelfishTags extends Tags
         if (isset($this->context['schema_type'])) :
             $schema = $this->context['schema_type'];
 
+        $schemas = [];
+
         foreach ($schema as $type) {
-            $s_type = $type['type'];
-            switch ($s_type) {
-            case "article":
-                return $this->article($type);
-                break;
-            case "organization":
-                return $this->organization($type);
-                break;
-            case "person":
-                return $this->person($type);
-                break;
-            case "product":
-                return $this->product($type);
-                break;
-            case "recipe":
-                return $this->recipe($type);
-                break;
-            case "service":
-                break;
+            if ($type['type'] == 'person') {
+                $schemas[] = $this->person($type);
+            } elseif ($type['type'] == 'recipe') {
+                $schemas[] = $this->recipe($type);
+            } elseif ($type['type'] == 'organization') {
+                $schemas[] = $this->organization($type);
+            } elseif ($type['type'] == 'product') {
+                $schemas[] = $this->product($type);
+            } elseif ($type['type'] == 'article') {
+                $schemas[] = $this->article($type);
+            }
         }
-        }
+
+        return implode($schemas);
 
         endif;
     }
@@ -51,7 +46,7 @@ class BabelfishTags extends Tags
      */
     private function article($type)
     {
-        $user = User::find($this->issetor('article_author'));
+        $user = User::find($type['Author']);
         return '<script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -78,7 +73,7 @@ class BabelfishTags extends Tags
                     "url": "' . $this->issetor($type['Publisher logo']) . '"
                 }
             },
-            "datePublished": "' . date_format($this->issetor('date'), "Y-m-d") . '",
+            "datePublished": " // TODO: ",
             "dateModified": "// TODO: "
         }
         </script>';
@@ -98,7 +93,7 @@ class BabelfishTags extends Tags
             "name": "' . $this->issetor($type['Name']) . '",
             "url": "' . $this->issetor($type['URL']) . '",
             "image": "' . $this->issetor($type['Photo']) . '",
-            "sameAs": ' . $this->issetor($type['Social profiles']) . '",
+            "sameAs": "' . $this->issetor($type['Social profiles']) . '",
             "jobTitle": "' . $this->issetor($type['Job title']) . '",
             "worksFor": {
                 "@type": "Organization",
@@ -190,7 +185,7 @@ class BabelfishTags extends Tags
             "url": "' . $this->issetor($type['URL']) . '",
             "logo": "' . $this->issetor($type['Logo']) . '",
             "contactPoint": ' . $this->organization_contacts($type['Contacts']) . ',
-            "sameAs": ' . $this->issetor($type['Social profiles']) . ',
+            "sameAs": "// TODO:",
         }
         </script>';
     }
@@ -278,8 +273,8 @@ class BabelfishTags extends Tags
             foreach ($contacts as $contact) {
                 $list .= '{';
                 $list .= '"@type": "ContactPoint",';
-                $list .= '"telephone": "' . $contact['phone'] . '",';
-                $list .= '"contactType": "' . $contact['type'] . '",';
+                $list .= '"telephone": "' . $contact['Phone'] . '",';
+                $list .= '"contactType": "' . $contact['Type'] . '",';
                 $list .= '"contactOption": // TODO: ["TollFree","HearingImpairedSupported"],';
                 $list .= '"availableLanguage": // TODO: ["en","es"]';
                 $list .= '},';

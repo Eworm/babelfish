@@ -30,7 +30,7 @@ class BabelfishListener extends Listener
         $fields = YAML::parse(File::get($this->getDirectory().'/resources/fieldsets/content.yaml'))['fields'];
 
         $sections['event'] = [
-             'display' => 'Rich snippet',
+             'display' => 'Rich snippets',
              'fields' => $fields
          ];
 

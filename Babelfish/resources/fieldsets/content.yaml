@@ -217,7 +217,7 @@ fields:
               - Medical organization
               - NGO
               - Newsmedia organization
-              - Performinggroup
+              - Performing group
               - Project
               - Sport sorganization
               - Workers union
@@ -228,7 +228,7 @@ fields:
             type: assets
             container: main
             max_files: 1
-          Social_profiles:
+          Social profiles:
             type: list
           Contacts:
             type: grid
@@ -237,7 +237,7 @@ fields:
                 type: select
                 options:
                   - Customer service
-                  - Rechnical support
+                  - Technical support
                   - Billing support
                   - Bill payment
                   - Sales
