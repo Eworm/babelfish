@@ -76,7 +76,7 @@ class BabelfishTags extends Tags
                     "url": "' . $this->issetor($type['Publisher logo']) . '"
                 }
             },
-            "datePublished": "' . date_format($this->context['date'], "Y-m-d") . '",
+            "datePublished": "' . $this->issetor_date($this->context['date']) . '",
             "dateModified": "' . date("Y-m-d", $this->context['last_modified']) . '"
         }
         </script>';
@@ -150,6 +150,7 @@ class BabelfishTags extends Tags
             "@type": "Recipe",
             "name": "' . $this->issetor($type['Title']) . '",
             "image": "' . $this->issetor($type['Photo']) . '",
+            "video": "' . $this->issetor($type['Video']) . '",
             "description": "' . $this->issetor($type['Description']) . '",
             "recipeCuisine": "' . $this->issetor($type['Cuisine']) . '",
             "keywords": ' . $this->context($type['Keywords']) . ',
@@ -206,7 +207,7 @@ class BabelfishTags extends Tags
             "@context": "http://schema.org",
             "@type": "WebSite",
             "name": "' . $this->issetor($type['Name']) . '",
-            "url": "' . $this->issetor($type['URL']) . '",
+            "url": "' . $this->issetor($type['URL']) . '"
         }
         </script>';
     }
@@ -329,9 +330,9 @@ class BabelfishTags extends Tags
     }
 
     /**
-     * Get a fieldtype value
+     * Return a fieldtype value or an array
      *
-     * @return string
+     * @return string|array
      */
     private function context($fieldtype)
     {
@@ -359,12 +360,22 @@ class BabelfishTags extends Tags
     }
 
     /**
-     * Get a fieldtype value
+     * Return a fieldtype value
      *
      * @return string
      */
     public function issetor(&$var, $default = false)
     {
         return isset($var) ? $var : $default;
+    }
+
+    /**
+     * Return a date value
+     *
+     * @return string
+     */
+    public function issetor_date(&$var, $default = false)
+    {
+        return isset($var) ? date_format($var, "Y-m-d") : $default;
     }
 }

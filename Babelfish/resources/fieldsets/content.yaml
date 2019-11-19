@@ -95,6 +95,9 @@ fields:
             type: assets
             container: main
             max_files: 1
+          Video:
+            type: text
+            mode: url
           Category:
             type: select
             options:
@@ -155,6 +158,7 @@ fields:
               - Article
               - Newsarticle
               - Blogpost
+            default: Article
           Title:
             type: text
             field:
