@@ -233,8 +233,10 @@ fields:
                 type: text
                 mode: tel
               Areas:
+                instructions: "Shortcodes, f.i. en or nl"
                 type: list
               Languages:
+                instructions: "Shortcodes, f.i. en or nl"
                 type: list
               Extras:
                 type: checkboxes
@@ -249,3 +251,64 @@ fields:
           URL:
             type: text
             mode: url
+      job:
+        display: Job posting
+        fields:
+          Title:
+            type: text
+          Description:
+            type: textarea
+          Employment type:
+            type: select
+            options:
+              - Contract
+              - Full-time
+              - Internship
+              - Part-time
+              - Seasonal
+              - Temporary
+          Date posted:
+            width: 50
+            type: date
+          Valid through:
+            width: 50
+            type: date
+          Hiring organization:
+            type: text
+          Location:
+            type: section
+          Street address:
+            type: text
+          Locality:
+            type: text
+          Region:
+            type: text
+          Postal code:
+            type: text
+          Country code:
+            type: text
+          Base salary:
+            instructions: "Hourly"
+            type: section
+          Currency:
+            instructions: "Shortcodes, f.i. USD or EUR"
+            width: 50
+            type: text
+          Amount:
+            width: 50
+            type: text
+            mode: number
+          Estimated salary:
+            instructions: "Yearly"
+            type: section
+          Currency:
+            instructions: "Shortcodes, f.i. USD or EUR"
+            type: text
+          Minimum:
+            width: 50
+            type: text
+            mode: number
+          Maximum:
+            width: 50
+            type: text
+            mode: number

@@ -34,6 +34,8 @@ class BabelfishTags extends Tags
                 $schemas[] = $this->article($type);
             } elseif ($type['type'] == 'website') {
                 $schemas[] = $this->website($type);
+            } elseif ($type['type'] == 'job') {
+                $schemas[] = $this->job($type);
             }
         }
 
@@ -213,6 +215,64 @@ class BabelfishTags extends Tags
     }
 
     /**
+     * Job posting
+     *
+     * @return string
+     */
+    private function job($type)
+    {
+        return '<script type = "application/ld+json" >
+        {
+            "@context": "http://schema.org",
+            "@type": "JobPosting",
+            "estimatedSalary": {
+                "@type": "MonetaryAmount",
+                "currency": "' . $this->issetor($type['Currency']) . '",
+                "value": {
+                    "@type": "QuantitativeValue",
+                    "minValue": "' . $this->issetor($type['Minimum']) . '",
+                    "maxValue": "' . $this->issetor($type['Maximum']) . '",
+                    "unitText": "YEAR"
+                }
+            },
+            "datePosted": "' . $this->issetor($type['Date posted']) . '",
+            "description": "' . $this->issetor($type['Description']) . '",
+            "title": "' . $this->issetor($type['Title']) . '",
+            "validThrough": "' . $this->issetor($type['Valid through']) . '",
+            "employmentType": "' . \str_replace('-', '_', $this->issetor($type['Employment type'])) . '",
+            "hiringOrganization": {
+                "@type": "Organization",
+                "name": "' . $this->issetor($type['Hiring organization']) . '"
+            },
+            "identifier": {
+                "@type": "PropertyValue",
+                "name": "' . $this->issetor($type['Hiring organization']) . '"
+            },
+            "jobLocation": {
+                "@type": "Place",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "' . $this->issetor($type['Street address']) . '",
+                    "addressLocality": "' . $this->issetor($type['Locality']) . '",
+                    "addressRegion": "' . $this->issetor($type['Region']) . '",
+                    "postalCode": "' . $this->issetor($type['Postal code']) . '",
+                    "addressCountry": "' . $this->issetor($type['Country code']) . '"
+                }
+            },
+            "baseSalary": {
+                "@type": "MonetaryAmount",
+                "currency": "' . $this->issetor($type['Currency']) . '",
+                "value": {
+                    "@type": "QuantitativeValue",
+                    "value": ' . $this->issetor($type['Amount']) . ',
+                    "unitText": "HOUR"
+                }
+            }
+        }
+        </script>';
+    }
+
+    /**
      * Product availability
      *
      * @return string
@@ -319,7 +379,7 @@ class BabelfishTags extends Tags
             foreach ($instructions as $instruction) {
                 $list .= '{"@type": "HowToStep",';
                 $list .= '"text":"' . $instruction . '"}';
-                if (!$hasComma){
+                if (!$hasComma) {
                     $list .= ",";
                 }
                 $hasComma = true;
@@ -337,7 +397,6 @@ class BabelfishTags extends Tags
     private function context($fieldtype)
     {
         if (isset($fieldtype)) {
-
             if (is_array($fieldtype)) {
 
                 // $fieldtype is an array
