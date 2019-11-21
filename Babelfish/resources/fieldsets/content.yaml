@@ -2,6 +2,212 @@ fields:
   schema_type:
     type: replicator
     sets:
+      article:
+        display: Article
+        fields:
+          Type:
+            type: select
+            options:
+              - Article
+              - Newsarticle
+              - Blogpost
+            default: Article
+          Title:
+            type: text
+            field:
+              type: text
+          Description:
+            type: text
+          Photo:
+            type: assets
+            container: main
+            max_files: 1
+          Author:
+            type: users
+            default: current
+            max_items: 1
+          Publisher:
+            type: text
+          Publisher logo:
+            type: assets
+            container: main
+            max_files: 1
+      book:
+        display: Book
+        fields:
+          Title:
+            type: text
+          ISBN:
+            type: text
+          Cover image:
+            type: assets
+            container: main
+            max_files: 1
+          Published date:
+            type: date
+          Author URL:
+            type: text
+            mode: url
+          Number of pages:
+            type: text
+            mode: number
+          Publisher:
+            type: text
+          Language:
+            type: text
+          Type:
+            type: radio
+            options:
+              - Audiobook format
+              - EBook
+              - Graphic novel
+              - Hardcover
+              - Paperback
+          Availabilty:
+            type: radio
+            options:
+              - In stock
+              - Out of stock
+              - Online only
+              - In store only
+              - Preorder
+              - Presale
+              - Limited availability
+              - Sold out
+              - Discontinued
+          Currency:
+            instructions: "Shortcodes, f.i. USD or EUR"
+            width: 50
+            type: text
+          Amount:
+            width: 50
+            type: text
+            mode: number
+      job:
+        display: Job posting
+        fields:
+          Title:
+            type: text
+          Description:
+            type: textarea
+          Employment type:
+            type: select
+            options:
+              - Contract
+              - Full-time
+              - Internship
+              - Part-time
+              - Seasonal
+              - Temporary
+          Date posted:
+            width: 50
+            type: date
+          Valid through:
+            width: 50
+            type: date
+          Hiring organization:
+            type: text
+          Location:
+            type: section
+          Street address:
+            type: text
+          Locality:
+            type: text
+          Region:
+            type: text
+          Postal code:
+            type: text
+          Country code:
+            type: text
+          Base salary:
+            instructions: "Hourly"
+            type: section
+          Currency:
+            instructions: "Shortcodes, f.i. USD or EUR"
+            width: 50
+            type: text
+          Amount:
+            width: 50
+            type: text
+            mode: number
+          Estimated salary:
+            instructions: "Yearly"
+            type: section
+          Currency:
+            instructions: "Shortcodes, f.i. USD or EUR"
+            type: text
+          Minimum:
+            width: 50
+            type: text
+            mode: number
+          Maximum:
+            width: 50
+            type: text
+            mode: number
+      organization:
+        display: Organization
+        fields:
+          Name:
+            type: text
+          Alternate name:
+            type: text
+          Type:
+            type: select
+            options:
+              - Airline
+              - Consortium
+              - Corporation
+              - Educational organization
+              - Government organization
+              - Library system
+              - Medical organization
+              - NGO
+              - Newsmedia organization
+              - Organization
+              - Performing group
+              - Project
+              - Sports organization
+              - Workers union
+          URL:
+            type: text
+            mode: url
+          Logo:
+            type: assets
+            container: main
+            max_files: 1
+          Social profiles:
+            type: list
+          Contacts:
+            type: grid
+            fields:
+              Type:
+                type: select
+                options:
+                  - Customer service
+                  - Technical support
+                  - Billing support
+                  - Bill payment
+                  - Sales
+                  - Reservations
+                  - Credit card support
+                  - Emergency
+                  - Baggage tracking
+                  - Roadside assistance
+                  - Package tracking
+              Phone:
+                type: text
+                mode: tel
+              Areas:
+                instructions: "Shortcodes, f.i. en or nl"
+                type: list
+              Languages:
+                instructions: "Shortcodes, f.i. en or nl"
+                type: list
+              Extras:
+                type: checkboxes
+                options:
+                  - Toll free
+                  - Hearing impared support
       person:
         display: Person
         fields:
@@ -149,100 +355,6 @@ fields:
             type: section
           List of steps:
             type: list
-      article:
-        display: Article
-        fields:
-          Type:
-            type: select
-            options:
-              - Article
-              - Newsarticle
-              - Blogpost
-            default: Article
-          Title:
-            type: text
-            field:
-              type: text
-          Description:
-            type: text
-          Photo:
-            type: assets
-            container: main
-            max_files: 1
-          Author:
-            type: users
-            default: current
-            max_items: 1
-          Publisher:
-            type: text
-          Publisher logo:
-            type: assets
-            container: main
-            max_files: 1
-      organization:
-        display: Organization
-        fields:
-          Name:
-            type: text
-          Alternate name:
-            type: text
-          Type:
-            type: select
-            options:
-              - Airline
-              - Consortium
-              - Corporation
-              - Educational organization
-              - Government organization
-              - Library system
-              - Medical organization
-              - NGO
-              - Newsmedia organization
-              - Organization
-              - Performing group
-              - Project
-              - Sports organization
-              - Workers union
-          URL:
-            type: text
-            mode: url
-          Logo:
-            type: assets
-            container: main
-            max_files: 1
-          Social profiles:
-            type: list
-          Contacts:
-            type: grid
-            fields:
-              Type:
-                type: select
-                options:
-                  - Customer service
-                  - Technical support
-                  - Billing support
-                  - Bill payment
-                  - Sales
-                  - Reservations
-                  - Credit card support
-                  - Emergency
-                  - Baggage tracking
-                  - Roadside assistance
-                  - Package tracking
-              Phone:
-                type: text
-                mode: tel
-              Areas:
-                instructions: "Shortcodes, f.i. en or nl"
-                type: list
-              Languages:
-                instructions: "Shortcodes, f.i. en or nl"
-                type: list
-              Extras:
-                type: checkboxes
-                options:
-                  - Toll free
-                  - Hearing impared support
       website:
         display: Website
         fields:
@@ -251,64 +363,3 @@ fields:
           URL:
             type: text
             mode: url
-      job:
-        display: Job posting
-        fields:
-          Title:
-            type: text
-          Description:
-            type: textarea
-          Employment type:
-            type: select
-            options:
-              - Contract
-              - Full-time
-              - Internship
-              - Part-time
-              - Seasonal
-              - Temporary
-          Date posted:
-            width: 50
-            type: date
-          Valid through:
-            width: 50
-            type: date
-          Hiring organization:
-            type: text
-          Location:
-            type: section
-          Street address:
-            type: text
-          Locality:
-            type: text
-          Region:
-            type: text
-          Postal code:
-            type: text
-          Country code:
-            type: text
-          Base salary:
-            instructions: "Hourly"
-            type: section
-          Currency:
-            instructions: "Shortcodes, f.i. USD or EUR"
-            width: 50
-            type: text
-          Amount:
-            width: 50
-            type: text
-            mode: number
-          Estimated salary:
-            instructions: "Yearly"
-            type: section
-          Currency:
-            instructions: "Shortcodes, f.i. USD or EUR"
-            type: text
-          Minimum:
-            width: 50
-            type: text
-            mode: number
-          Maximum:
-            width: 50
-            type: text
-            mode: number

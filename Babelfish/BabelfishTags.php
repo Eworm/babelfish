@@ -2,6 +2,7 @@
 
 namespace Statamic\Addons\Babelfish;
 
+use Statamic\API\Config;
 use Statamic\Data\Data;
 use Carbon\Carbon;
 use Statamic\Extend\Tags;
@@ -36,6 +37,8 @@ class BabelfishTags extends Tags
                 $schemas[] = $this->website($type);
             } elseif ($type['type'] == 'job') {
                 $schemas[] = $this->job($type);
+            } elseif ($type['type'] == 'book') {
+                $schemas[] = $this->book($type);
             }
         }
 
@@ -210,6 +213,39 @@ class BabelfishTags extends Tags
             "@type": "WebSite",
             "name": "' . $this->issetor($type['Name']) . '",
             "url": "' . $this->issetor($type['URL']) . '"
+        }
+        </script>';
+    }
+
+    /**
+     * Book
+     *
+     * @return string
+     */
+    private function book($type)
+    {
+        return '<script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "mainEntity": {
+                "@type": "Book",
+                "author": "' . $this->issetor($type['Author URL']) . '",
+                "bookFormat": "http://schema.org/' . str_replace(' ', '', $this->issetor($type['Type'])) . '",
+                "datePublished": "' . $this->issetor($type['Published date']) . '",
+                "image": "' . $this->issetor($type['Cover image']) . '",
+                "inLanguage": "' . $this->issetor($type['Language']) . '",
+                "isbn": "' . $this->issetor($type['ISBN']) . '",
+                "name": "' . $this->issetor($type['Title']) . '",
+                "numberOfPages": "' . $this->issetor($type['Number of pages']) . '",
+                "offers": {
+                    "@type": "Offer",
+                    "availability": "' . $this->product_availabilty($this->issetor($type['Availabilty'])). '",
+                    "price": "' . $this->issetor($type['Amount']) . '",
+                    "priceCurrency": "' . $this->issetor($type['Currency']) . '"
+                },
+                "publisher": "' . $this->issetor($type['Publisher']) . '"
+            }
         }
         </script>';
     }
