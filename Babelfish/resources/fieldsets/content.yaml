@@ -83,6 +83,50 @@ fields:
             width: 50
             type: text
             mode: number
+      howto:
+        display: How-to
+        fields:
+          Name:
+            type: text
+          Description:
+            type: textarea
+          Image:
+            type: assets
+            container: main
+            max_files: 1
+          Total time:
+            instructions: "In hours"
+            width: 33
+            type: text
+            mode: number
+          Estimated cost:
+            instructions: "In your chosen currency"
+            width: 33
+            type: text
+            mode: number
+          Currency:
+            instructions: "Shortcodes, f.i. USD or EUR"
+            width: 33
+            width: 50
+            type: text
+          Supply list:
+            type: list
+          Tools:
+            type: list
+          Instructions:
+            type: grid
+            fields:
+              Name:
+                type: text
+              Description:
+                type: textarea
+              Image:
+                type: assets
+                container: main
+                max_files: 1
+              URL:
+                type: text
+                mode: url
       job:
         display: Job posting
         fields:

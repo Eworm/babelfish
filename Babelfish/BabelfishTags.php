@@ -39,6 +39,8 @@ class BabelfishTags extends Tags
                 $schemas[] = $this->job($type);
             } elseif ($type['type'] == 'book') {
                 $schemas[] = $this->book($type);
+            } elseif ($type['type'] == 'howto') {
+                $schemas[] = $this->howto($type);
             }
         }
 
@@ -174,7 +176,7 @@ class BabelfishTags extends Tags
                 "fatContent": "' . $this->issetor($type['Fat']) . ' g"
             },
             "recipeIngredient": ' . $this->context($type['List of Ingredients']) . ',
-            "recipeInstructions": ' . $this->recipe_instructions($type['List of steps']) . '
+            "recipeInstructions": ' . $this->listtoarray($this->issetor($type['List of steps']), "HowToStep", "text") . '
         }
         </script>';
     }
@@ -309,6 +311,33 @@ class BabelfishTags extends Tags
     }
 
     /**
+     * How-to
+     *
+     * @return string
+     */
+    private function howto($type)
+    {
+        return '<script type="application/ld+json">
+        {
+            "@context": "https://schema.org/",
+            "@type": "HowTo",
+            "name": "' . $this->issetor($type['Name']) . '",
+            "description": "' . $this->issetor($type['Description']) . '",
+            "image": "' . $this->issetor($type['Image']) . '",
+            "totalTime": "PT' . $this->issetor($type['Total time']) . 'M",
+            "estimatedCost": {
+                "@type": "MonetaryAmount",
+                "currency": "' . $this->issetor($type['Currency']) . '",
+                "value": "' . $this->issetor($type['Estimated cost']) . '"
+            },
+            "supply": ' . $this->listtoarray($this->issetor($type['Supply list']), "HowToSupply", "name") . ',
+            "tool": ' . $this->listtoarray($this->issetor($type['Tools']), "HowToTool", "name") . ',
+            "step": ' . $this->howto_instructions($this->issetor($type['Instructions'])) . '
+        }
+        </script>';
+    }
+
+    /**
      * Product availability
      *
      * @return string
@@ -391,8 +420,8 @@ class BabelfishTags extends Tags
             foreach ($contacts as $contact) {
                 $list .= '{' . "\r\n";
                 $list .= '"@type": "ContactPoint",' . "\r\n";
-                $list .= '"telephone": "' . $contact['Phone'] . '",' . "\r\n";
-                $list .= '"contactType": "' . $contact['Type'] . '",' . "\r\n";
+                $list .= '"telephone": "' . $this->issetor($contact['Phone']) . '",' . "\r\n";
+                $list .= '"contactType": "' . $this->issetor($contact['Type']) . '",' . "\r\n";
                 $list .= '"contactOption": ' . $this->context($contact['Extras']) . ',' . "\r\n";
                 $list .= '"availableLanguage": ' . $this->context($contact['Languages']) . '' . "\r\n";
                 $list .= '}';
@@ -402,19 +431,48 @@ class BabelfishTags extends Tags
     }
 
     /**
-     * Recipe instructions
+     * How-to instructions
      *
      * @return string
      */
-    private function recipe_instructions($instructions)
+    private function howto_instructions($instructions)
     {
         $list = '';
-        if (isset($instructions)) {
+        if (isset($instructions) && $instructions != false) {
             $hasComma = false;
             $list .= "[";
             foreach ($instructions as $instruction) {
-                $list .= '{"@type": "HowToStep",';
-                $list .= '"text":"' . $instruction . '"}';
+                $list .= '{' . "\r\n";
+                $list .= '"@type": "HowToStep",' . "\r\n";
+                $list .= '"text": "' . $this->issetor($instruction['Description']) . '",' . "\r\n";
+                $list .= '"image": "' . $this->issetor($instruction['Image']) . '",' . "\r\n";
+                $list .= '"name": "' . $this->issetor($instruction['Name']) . '",' . "\r\n";
+                $list .= '"url": "' . $this->issetor($instruction['URL']) . '"' . "\r\n";
+                $list .= '}';
+                if (!$hasComma) {
+                    $list .= ",";
+                }
+                $hasComma = true;
+            }
+            $list .= "]";
+            return $list;
+        }
+    }
+
+    /**
+     * List fieldtype to an array
+     *
+     * @return string
+     */
+    private function listtoarray($instructions, $type, $field)
+    {
+        $list = '';
+        if (isset($instructions) && $instructions != false) {
+            $hasComma = false;
+            $list .= "[";
+            foreach ($instructions as $instruction) {
+                $list .= '{"@type": "' . $type . '",';
+                $list .= '"' . $field . '":"' . $instruction . '"}';
                 if (!$hasComma) {
                     $list .= ",";
                 }
